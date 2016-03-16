@@ -16,6 +16,15 @@ class Firewall (EventMixin):
 
     def _handle_ConnectionUp (self, event):
         ''' Add your logic here ... '''
+        msg = of.ofp_flow_mod() #install a flow entry
+        matchmac = of.ofp_match() #create match object
+        matchmac.dl_src = EthAddr("00:00:00:00:00:02") #set match condition
+        matchmac.dl_dst = EthAddr("00:00:00:00:00:03") #set match condition
+        msg.match = matchmac
+        msg.actions.append(of.ofp_action_output(port=of.OFPP_NONE)) #drop packet
+                
+        event.connection.send(msg) #send msg
+
         log.debug("Firewall rules installed on %s", dpidToStr(event.dpid))
 
 def launch ():
