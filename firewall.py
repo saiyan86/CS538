@@ -20,7 +20,6 @@ class Firewall (EventMixin):
         msg.priority = 65535
         msg.match.dl_src = EthAddr("00:00:00:00:00:02") #set match condition
         msg.match.dl_dst = EthAddr("00:00:00:00:00:03") #set match condition
-        #msg.actions.append(of.ofp_action_output(port=of.OFPP_NONE)) #drop packet
                 
         event.connection.send(msg) #send msg
 
